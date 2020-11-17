@@ -10,5 +10,6 @@ bootstrap().then(() => {
   console.log({
     projectName: 'API Smart Ranking',
     date: new Date(),
+    started: `Server running on ${process.env.HOST}:${process.env.PORT}`,
   })
 })

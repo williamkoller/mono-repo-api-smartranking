@@ -17,6 +17,7 @@ services:
 
   db_app:
     image: mongo
+    container_name: mongo_db
     env_file:
       - .env
     volumes:

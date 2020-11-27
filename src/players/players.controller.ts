@@ -8,8 +8,8 @@ export class PlayersController {
     constructor(private readonly playersService: PlayersService) {}
 
     @Post()
-    async createUpdatePlayer(@Body() createPlayerDTO: CreatePlayerDTO): Promise<void> {
-        await this.playersService.createUpdatePlayer(createPlayerDTO)
+    async createUpdatePlayer(@Body() createPlayerDTO: CreatePlayerDTO): Promise<Player> {
+        return await this.playersService.createUpdatePlayer(createPlayerDTO)
     }
 
     @Get()

@@ -1,6 +1,8 @@
 import { Document } from 'mongoose'
 
-export interface Player extends Document {
+export type Player = PlayerDocument
+
+export interface PlayerDocument extends Document {
     name: string
     email: string
     phoneNumber: string

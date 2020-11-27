@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common'
 import { CreatePlayerDTO } from './dto/create-player.dto'
 import { PlayersService } from './players.service'
 import { Player } from './types/player.type'
@@ -13,7 +13,15 @@ export class PlayersController {
     }
 
     @Get()
-    async consultPlater(): Promise<Player[]> {
+    async consultPlater(@Query('email') email: string): Promise<Player[] | Player> {
+        if (email) {
+            return this.playersService.consultByEmail(email)
+        }
         return this.playersService.consultAllPlayer()
+    }
+
+    @Delete()
+    async deletePlayer(@Query('email') email: string): Promise<void> {
+        this.playersService.deletePlayer(email)
     }
 }

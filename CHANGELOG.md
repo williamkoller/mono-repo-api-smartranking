@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## Release [v0.0.2] - 27-11-2020
+
 -   Add Mongoose
 
 ## Release [v0.0.1] - 26-11-2020

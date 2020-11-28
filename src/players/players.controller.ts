@@ -13,7 +13,7 @@ export class PlayersController {
     }
 
     @Get()
-    async consultPlater(@Query('email') email: string): Promise<Player[] | Player> {
+    async consultPlayer(@Query('email') email: string): Promise<Player[] | Player> {
         if (email) {
             return this.playersService.consultByEmail(email)
         }
@@ -22,6 +22,6 @@ export class PlayersController {
 
     @Delete()
     async deletePlayer(@Query('email') email: string): Promise<void> {
-        this.playersService.deletePlayer(email)
+        await this.playersService.deletePlayer(email)
     }
 }

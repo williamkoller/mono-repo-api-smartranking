@@ -10,6 +10,7 @@ export class CreatePlayerDTO {
     readonly phoneNumber?: string
 
     @IsEmail()
+    @IsString()
     @IsNotEmpty()
     readonly email: string
 }

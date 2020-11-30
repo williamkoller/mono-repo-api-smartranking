@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Add Validation Pipe
+
 ## Release [v0.0.2] - 27-11-2020
 
 -   Add Mongoose

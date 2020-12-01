@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common'
 import { CreatePlayerDTO } from './dto/create-player.dto'
+import { PlayersValidationParamsPipe } from './pipes/players-validation-params.pipe'
 import { PlayersService } from './players.service'
 import { Player } from './types/player.type'
 
@@ -14,7 +15,7 @@ export class PlayersController {
     }
 
     @Get()
-    async consultPlayer(@Query('email') email: string): Promise<Player[] | Player> {
+    async consultPlayer(@Query('email', PlayersValidationParamsPipe) email: string): Promise<Player[] | Player> {
         if (email) {
             return this.playersService.consultByEmail(email)
         }
@@ -22,7 +23,7 @@ export class PlayersController {
     }
 
     @Delete()
-    async deletePlayer(@Query('email') email: string): Promise<void> {
+    async deletePlayer(@Query('email', PlayersValidationParamsPipe) email: string): Promise<void> {
         await this.playersService.deletePlayer(email)
     }
 }

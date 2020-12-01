@@ -69,7 +69,7 @@ export class PlayersService {
      * @memberof PlayersService
      */
     async deletePlayer(email: string): Promise<void> {
-        await this.playerModel.remove({ email }).exec()
+        await this.playerModel.deleteOne({ email }).exec()
     }
 
     /**

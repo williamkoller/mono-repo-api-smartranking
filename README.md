@@ -5,7 +5,7 @@
 
 # **API Smart Ranking**
 
-This Project aims to deliver modern solutions, using the **NestjJS** framework in conjunction with robust and scalable **Cloud** services.
+This Project aims to deliver modern solutions, using the **NestJS** framework in conjunction with robust and scalable **Cloud** services.
 
 > #### MongoDB
 

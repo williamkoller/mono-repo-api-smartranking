@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
-import { CreatePlayerDTO } from './dto/create-player.dto'
+import { CreatePlayerDTO, UpdatePlayerDTO } from './dto'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Player } from './types/player.type'
+import { ReturnTypeResponse } from './types/return.type.response'
 
 @Injectable()
 export class PlayersService {
@@ -10,7 +11,7 @@ export class PlayersService {
 
     /**
      * @param {CreatePlayerDTO} createPlayerDto
-     * @return {*}  {Promise<void>}
+     * @return {*}  {Promise<Player>}
      * @memberof PlayersService
      */
     async createPlayer(createPlayerDto: CreatePlayerDTO): Promise<Player> {
@@ -24,21 +25,21 @@ export class PlayersService {
     }
 
     /**
-     * @param {Player} playerFound
-     * @param {CreatePlayerDTO} createPlayerDto
+     * @param {string} _id
+     * @param {UpdatePlayerDTO} updatePlayerDto
      * @return {*}  {Promise<Player>}
      * @memberof PlayersService
      */
-    async updatePlayer(_id: string, createPlayerDto: CreatePlayerDTO): Promise<Player> {
+    async updatePlayer(_id: string, updatePlayerDto: UpdatePlayerDTO): Promise<Player> {
         const playerFound = await this.playerModel.findOne({ _id }).exec()
         if (!playerFound) {
             throw new NotFoundException(`The player with this id: ${_id} not found!`)
         }
-        return await this.playerModel.findOneAndUpdate({ _id }, { $set: createPlayerDto }).exec()
+        return await this.playerModel.findOneAndUpdate({ _id }, { $set: updatePlayerDto }).exec()
     }
 
     /**
-     * @return {*}  {Promise<Player[] | CreatePlayerDto[]>}
+     * @return {*}  {(Promise<Player[] | CreatePlayerDTO[]>)}
      * @memberof PlayersService
      */
     async consultAllPlayer(): Promise<Player[] | CreatePlayerDTO[]> {
@@ -52,15 +53,15 @@ export class PlayersService {
     }
 
     /**
-     * @param {string} email
-     * @return {*}  {Promise<Player>}
+     * @param {string} _id
+     * @return {*}  {}
      * @memberof PlayersService
      */
     async consultById(_id: string): Promise<CreatePlayerDTO> {
         const playerFound = await this.playerModel.findOne({ _id }, { __v: false }).exec()
 
         if (!playerFound) {
-            throw new NotFoundException(`Player with _id: ${_id} not found `)
+            throw new NotFoundException(`The player with this id: ${_id} not found `)
         }
 
         const playerObject = {
@@ -75,10 +76,18 @@ export class PlayersService {
 
     /**
      * @param {string} _id
-     * @return {*}  {Promise<any>}
+     * @return {*}  {Promise<ReturnTypeResponse>}
      * @memberof PlayersService
      */
-    async deletePlayer(_id: string): Promise<void> {
+    async deletePlayer(_id: string): Promise<ReturnTypeResponse> {
+        const playerFound = await this.playerModel.findOne({ _id }, { __v: false }).exec()
+
+        if (!playerFound) {
+            throw new NotFoundException(`The player with this id: ${_id} not found `)
+        }
         await this.playerModel.deleteOne({ _id }).exec()
+        return {
+            message: 'This player was deleted with successfully',
+        }
     }
 }

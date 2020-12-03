@@ -22,10 +22,7 @@ export class PlayersService {
      * @memberof PlayersService
      */
     async consultAllPlayer(): Promise<Player[]> {
-        return await this.playerModel
-            .find({}, { __v: false })
-            .sort({ name: +1 })
-            .exec()
+        return await this.playerModel.find({}, { __v: false }).exec()
     }
 
     /**
@@ -41,7 +38,7 @@ export class PlayersService {
         }
 
         const playerObject = {
-            id: playerFound._id,
+            id: playerFound.id,
             name: playerFound.name,
             email: playerFound.email,
             phoneNumber: playerFound.phoneNumber,

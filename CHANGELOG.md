@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 - Add Validation Pipe
+- Add Create, Delete, Find and Find by id Players
+- Add Create Category
 
 ## Release [v0.0.2] - 27-11-2020
 

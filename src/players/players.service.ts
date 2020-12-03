@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 import { CreatePlayerDTO } from './dto/create-player.dto'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
@@ -14,15 +14,41 @@ export class PlayersService {
      * @memberof PlayersService
      */
     async createPlayer(createPlayerDto: CreatePlayerDTO): Promise<Player> {
-        return await this.create(createPlayerDto)
+        const { email } = createPlayerDto
+        const playerFound = await this.playerModel.findOne({ email }).exec()
+        if (playerFound) {
+            throw new BadRequestException(`The player with this e-mail: ${email} already exists!`)
+        }
+        const playerCreated = new this.playerModel(createPlayerDto)
+        return await playerCreated.save()
     }
 
     /**
-     * @return {*}  {Promise<Player[]>}
+     * @param {Player} playerFound
+     * @param {CreatePlayerDTO} createPlayerDto
+     * @return {*}  {Promise<Player>}
      * @memberof PlayersService
      */
-    async consultAllPlayer(): Promise<Player[]> {
-        return await this.playerModel.find({}, { __v: false }).exec()
+    async updatePlayer(_id: string, createPlayerDto: CreatePlayerDTO): Promise<Player> {
+        const playerFound = await this.playerModel.findOne({ _id }).exec()
+        if (!playerFound) {
+            throw new NotFoundException(`The player with this id: ${_id} not found!`)
+        }
+        return await this.playerModel.findOneAndUpdate({ _id }, { $set: createPlayerDto }).exec()
+    }
+
+    /**
+     * @return {*}  {Promise<Player[] | CreatePlayerDto[]>}
+     * @memberof PlayersService
+     */
+    async consultAllPlayer(): Promise<Player[] | CreatePlayerDTO[]> {
+        const players = await this.playerModel.find({}, { __v: false }).exec()
+        return players.map((p) => ({
+            id: p.id,
+            name: p.name,
+            email: p.email,
+            numberPhone: p.phoneNumber,
+        }))
     }
 
     /**
@@ -48,32 +74,11 @@ export class PlayersService {
     }
 
     /**
-     * @param {Player} playerFound
-     * @param {CreatePlayerDTO} createPlayerDto
-     * @return {*}  {Promise<Player>}
-     * @memberof PlayersService
-     */
-    async updatePlayer(_id: string, createPlayerDto: CreatePlayerDTO): Promise<Player> {
-        return await this.playerModel.findOneAndUpdate({ _id }, { $set: createPlayerDto }).exec()
-    }
-
-    /**
-     * @param {string} email
+     * @param {string} _id
      * @return {*}  {Promise<any>}
      * @memberof PlayersService
      */
-    async deletePlayer(email: string): Promise<void> {
-        await this.playerModel.deleteOne({ email }).exec()
-    }
-
-    /**
-     * @private
-     * @param {CreatePlayerDTO} createPlayerDto
-     * @return {*}  {Promise<Player>}
-     * @memberof PlayersService
-     */
-    private async create(createPlayerDto: CreatePlayerDTO): Promise<Player> {
-        const playerCreated = new this.playerModel(createPlayerDto)
-        return await playerCreated.save()
+    async deletePlayer(_id: string): Promise<void> {
+        await this.playerModel.deleteOne({ _id }).exec()
     }
 }

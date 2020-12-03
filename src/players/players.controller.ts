@@ -11,7 +11,7 @@ export class PlayersController {
 
     @Post()
     @UsePipes(ValidationPipe)
-    async createUpdatePlayer(@Body() createPlayerDto: CreatePlayerDTO): Promise<Player> {
+    async createPlayer(@Body() createPlayerDto: CreatePlayerDTO): Promise<Player> {
         return await this.playersService.createPlayer(createPlayerDto)
     }
 
@@ -25,17 +25,17 @@ export class PlayersController {
     }
 
     @Get()
-    async consultPlayer(): Promise<Player[] | CreatePlayerDTO[]> {
-        return this.playersService.consultAllPlayer()
+    async searchForAllPlayer(): Promise<Player[] | CreatePlayerDTO[]> {
+        return this.playersService.searchForAllPlayer()
     }
 
     @Get('/:_id')
-    async consultById(@Param('_id', PlayersValidationParamsPipe) _id: string): Promise<CreatePlayerDTO> {
-        return await this.playersService.consultById(_id)
+    async searchByPlayerId(@Param('_id', PlayersValidationParamsPipe) _id: string): Promise<CreatePlayerDTO> {
+        return await this.playersService.searchByPlayerId(_id)
     }
 
     @Delete('/:_id')
-    async deletePlayer(@Param('_id', PlayersValidationParamsPipe) _id: string): Promise<ReturnTypeResponse> {
-        return await this.playersService.deletePlayer(_id)
+    async deletePlayerById(@Param('_id', PlayersValidationParamsPipe) _id: string): Promise<ReturnTypeResponse> {
+        return await this.playersService.deletePlayerById(_id)
     }
 }

@@ -42,7 +42,7 @@ export class PlayersService {
      * @return {*}  {(Promise<Player[] | CreatePlayerDTO[]>)}
      * @memberof PlayersService
      */
-    async consultAllPlayer(): Promise<Player[] | CreatePlayerDTO[]> {
+    async searchForAllPlayer(): Promise<Player[] | CreatePlayerDTO[]> {
         const players = await this.playerModel.find({}, { __v: false }).exec()
         return players.map((p) => ({
             id: p.id,
@@ -57,7 +57,7 @@ export class PlayersService {
      * @return {*}  {}
      * @memberof PlayersService
      */
-    async consultById(_id: string): Promise<CreatePlayerDTO> {
+    async searchByPlayerId(_id: string): Promise<CreatePlayerDTO> {
         const playerFound = await this.playerModel.findOne({ _id }, { __v: false }).exec()
 
         if (!playerFound) {
@@ -79,7 +79,7 @@ export class PlayersService {
      * @return {*}  {Promise<ReturnTypeResponse>}
      * @memberof PlayersService
      */
-    async deletePlayer(_id: string): Promise<ReturnTypeResponse> {
+    async deletePlayerById(_id: string): Promise<ReturnTypeResponse> {
         const playerFound = await this.playerModel.findOne({ _id }, { __v: false }).exec()
 
         if (!playerFound) {

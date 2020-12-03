@@ -11,7 +11,6 @@ export const PlayerSchema = new mongoose.Schema(
         },
         phoneNumber: {
             type: String,
-            unique: true,
         },
         ranking: {
             type: String,

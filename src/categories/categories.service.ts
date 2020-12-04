@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CreateCategoryDTO } from './dto/create-category.dto'
+import { UpdateCategoryDTO } from './dto/update-category.dto'
 import { Category } from './types/category.type'
 
 @Injectable()
@@ -44,5 +45,13 @@ export class CategoriesService {
         }
 
         return categoryObject
+    }
+
+    async updateCategory(category: string, updateCategoryDto: UpdateCategoryDTO): Promise<UpdateCategoryDTO> {
+        const categoryFound = await this.categoryModel.findOne({ category }).exec()
+        if (!categoryFound) {
+            throw new NotFoundException(`The category with this category: ${category} not found`)
+        }
+        return await this.categoryModel.findOneAndUpdate({ category }, { $set: updateCategoryDto }).exec()
     }
 }

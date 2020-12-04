@@ -4,9 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-- Add Validation Pipe
-- Add Create, Delete, Find and Find by id Players
-- Add Create Category
+-   Add Validation Pipe
+-   Add createPlayer, updatePlayer, searchForAllPlayer, searchByPlayerId and deletePlayerById Players
+-   Add createCategory, searchForAllCategories, searchByCategory, updateCategory Category
 
 ## Release [v0.0.2] - 27-11-2020
 

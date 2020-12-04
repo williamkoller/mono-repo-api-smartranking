@@ -14,10 +14,13 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    links: 
+      - db_app  
 
   db_app:
     image: mongo
     container_name: mongo_db
+    restart: always
     env_file:
       - .env
     volumes:

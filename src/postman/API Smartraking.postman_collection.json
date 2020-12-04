@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "be5081f8-13cc-4508-9ced-9b93e639f89c",
+		"name": "API Smartraking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Players",
+			"item": [
+				{
+					"name": "Create Player",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"William\",\n  \"email\": \"williama@gmail.com\",\n  \"phoneNumber\": 41998625100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/players",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"players"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Player",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/players",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"players"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/players/5fc902799a225f02ab6ec0cf",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"players",
+								"5fc902799a225f02ab6ec0cf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Player By Email",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/players/5fc8fedd398af8029fc47d9e",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"players",
+								"5fc8fedd398af8029fc47d9e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put By Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"William C Koller\",\n  \"phoneNumber\": 41998625109\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/players/5fc902799a225f02ab6ec0cf",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"players",
+								"5fc902799a225f02ab6ec0cf"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Post Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"category\": \"A\",\n  \"description\": \"Category A\",\n  \"events\": [\n    {\n      \"name\": \"Vitoria\",\n      \"operation\": \"+\",\n      \"value\": 3\n    },\n    {\n      \"name\": \"VitoriaLider\",\n      \"operation\": \"+\",\n      \"value\": 50\n    },\n    {\n      \"name\": \"Vitoria\",\n      \"operation\": \"+\",\n      \"value\": 80\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search For All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search By Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories/B",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"B"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "A",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"category\": \"B\",\n  \"description\": \"Category B\",\n  \"events\": [\n    {\n      \"name\": \"Derrota\",\n      \"operation\": \"-\",\n      \"value\": 6\n    },\n    {\n      \"name\": \"DerrotaLider\",\n      \"operation\": \"-\",\n      \"value\": 30\n    },\n    {\n      \"name\": \"Derrota\",\n      \"operation\": \"-\",\n      \"value\": 8\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/categories/A",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"A"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

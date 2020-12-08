@@ -18,7 +18,7 @@ export class PlayersService {
         const { email } = createPlayerDto
         const playerFound = await this.playerModel.findOne({ email }).exec()
         if (playerFound) {
-            throw new BadRequestException(`The player with this e-mail: ${email} already exists!`)
+            throw new BadRequestException(`Player already registered with this email.`)
         }
         const playerCreated = new this.playerModel(createPlayerDto)
         return await playerCreated.save()
@@ -33,7 +33,7 @@ export class PlayersService {
     async updatePlayer(_id: string, updatePlayerDto: UpdatePlayerDTO): Promise<Player> {
         const playerFound = await this.playerModel.findOne({ _id }).exec()
         if (!playerFound) {
-            throw new NotFoundException(`The player with this id: ${_id} not found!`)
+            throw new NotFoundException(`Player not found.`)
         }
         return await this.playerModel.findOneAndUpdate({ _id }, { $set: updatePlayerDto }).exec()
     }
@@ -61,7 +61,7 @@ export class PlayersService {
         const playerFound = await this.playerModel.findOne({ _id }, { __v: false }).exec()
 
         if (!playerFound) {
-            throw new NotFoundException(`The player with this id: ${_id} not found `)
+            throw new NotFoundException(`Player not found.`)
         }
 
         const playerObject = {
@@ -83,7 +83,7 @@ export class PlayersService {
         const playerFound = await this.playerModel.findOne({ _id }, { __v: false }).exec()
 
         if (!playerFound) {
-            throw new NotFoundException(`The player with this id: ${_id} not found `)
+            throw new NotFoundException(`Player not found.`)
         }
         await this.playerModel.deleteOne({ _id }).exec()
         return {

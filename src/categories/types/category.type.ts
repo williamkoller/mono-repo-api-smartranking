@@ -5,8 +5,8 @@ import { EventType } from './event.type'
 export type Category = CategoryDocument
 
 export interface CategoryDocument extends Document {
-    category: string
-    description: string
-    events: Array<EventType>
-    players: Array<Player>
+  category: string
+  description: string
+  events: Array<EventType>
+  players: Array<Player>
 }

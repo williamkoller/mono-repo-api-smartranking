@@ -1,3 +1,3 @@
 export type ReturnTypeResponse = {
-    message: string
+  message: string
 }

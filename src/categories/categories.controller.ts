@@ -6,34 +6,34 @@ import { Category } from './types/category.type'
 
 @Controller('api/v1/categories')
 export class CategoriesController {
-    constructor(private readonly categoriesService: CategoriesService) {}
-    @Post()
-    @UsePipes(ValidationPipe)
-    async createCategory(@Body() createCategoryDto: CreateCategoryDTO): Promise<Category> {
-        return await this.categoriesService.createCategory(createCategoryDto)
-    }
+  constructor(private readonly categoriesService: CategoriesService) {}
+  @Post()
+  @UsePipes(ValidationPipe)
+  async createCategory(@Body() createCategoryDto: CreateCategoryDTO): Promise<Category> {
+    return await this.categoriesService.createCategory(createCategoryDto)
+  }
 
-    @Get()
-    async searchForAllCategories(): Promise<Array<Category | CreateCategoryDTO>> {
-        return await this.categoriesService.searchForAllCategories()
-    }
+  @Get()
+  async searchForAllCategories(): Promise<Array<Category | CreateCategoryDTO>> {
+    return await this.categoriesService.searchForAllCategories()
+  }
 
-    @Get('/:category')
-    async searchByCategory(@Param('category') category: string): Promise<CreateCategoryDTO> {
-        return await this.categoriesService.searchByCategory(category)
-    }
+  @Get('/:category')
+  async searchByCategory(@Param('category') category: string): Promise<CreateCategoryDTO> {
+    return await this.categoriesService.searchByCategory(category)
+  }
 
-    @Put('/:category')
-    @UsePipes(ValidationPipe)
-    async updateCategory(
-        @Body() updateCategoryDto: UpdateCategoryDTO,
-        @Param('category') category: string,
-    ): Promise<UpdateCategoryDTO> {
-        return this.categoriesService.updateCategory(category, updateCategoryDto)
-    }
+  @Put('/:category')
+  @UsePipes(ValidationPipe)
+  async updateCategory(
+    @Body() updateCategoryDto: UpdateCategoryDTO,
+    @Param('category') category: string,
+  ): Promise<UpdateCategoryDTO> {
+    return this.categoriesService.updateCategory(category, updateCategoryDto)
+  }
 
-    @Post('/:category/players/:playerId')
-    async assignedPlayerCategory(@Param() params: string[]): Promise<Category> {
-        return this.categoriesService.assignedPlayerCategory(params)
-    }
+  @Post('/:category/players/:playerId')
+  async assignedPlayerCategory(@Param() params: string[]): Promise<Category> {
+    return this.categoriesService.assignedPlayerCategory(params)
+  }
 }

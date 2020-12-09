@@ -12,6 +12,12 @@ export class CategoriesService {
         @InjectModel('Category') private readonly categoryModel: Model<Category>,
         private readonly playersService: PlayersService,
     ) {}
+
+    /**
+     * @param {CreateCategoryDTO} createCategoryDto
+     * @return {*}  {Promise<Category>}
+     * @memberof CategoriesService
+     */
     async createCategory(createCategoryDto: CreateCategoryDTO): Promise<Category> {
         const { category } = createCategoryDto
         const categoryFound = await this.categoryModel.findOne({ category }).exec()
@@ -22,6 +28,10 @@ export class CategoriesService {
         return await categoryCreated.save()
     }
 
+    /**
+     * @return {*}  {(Promise<Array<Category | CreateCategoryDTO>>)}
+     * @memberof CategoriesService
+     */
     async searchForAllCategories(): Promise<Array<Category | CreateCategoryDTO>> {
         const categories = await this.categoryModel.find({}, { __v: false }).populate('players').exec()
 
@@ -39,6 +49,11 @@ export class CategoriesService {
         }))
     }
 
+    /**
+     * @param {string} category
+     * @return {*}  {Promise<CreateCategoryDTO>}
+     * @memberof CategoriesService
+     */
     async searchByCategory(category: string): Promise<CreateCategoryDTO> {
         const categoryFound = await this.categoryModel.findOne({ category }).populate('players').exec()
         if (!categoryFound) {
@@ -59,6 +74,12 @@ export class CategoriesService {
         return categoryObject
     }
 
+    /**
+     * @param {string} category
+     * @param {UpdateCategoryDTO} updateCategoryDto
+     * @return {*}  {Promise<UpdateCategoryDTO>}
+     * @memberof CategoriesService
+     */
     async updateCategory(category: string, updateCategoryDto: UpdateCategoryDTO): Promise<UpdateCategoryDTO> {
         const categoryFound = await this.categoryModel.findOne({ category }).exec()
         if (!categoryFound) {
@@ -67,6 +88,11 @@ export class CategoriesService {
         return await this.categoryModel.findOneAndUpdate({ category }, { $set: updateCategoryDto }).exec()
     }
 
+    /**
+     * @param {string[]} params
+     * @return {*}  {Promise<Category>}
+     * @memberof CategoriesService
+     */
     async assignedPlayerCategory(params: string[]): Promise<Category> {
         const category = params['category']
         const playerId = params['playerId']

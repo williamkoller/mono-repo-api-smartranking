@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Put, UsePipes, ValidationPipe, Query } from '@nestjs/common'
 import { CategoriesService } from './categories.service'
 import { CreateCategoryDTO } from './dto/create-category.dto'
 import { UpdateCategoryDTO } from './dto/update-category.dto'
@@ -14,13 +14,21 @@ export class CategoriesController {
   }
 
   @Get()
-  async searchForAllCategories(): Promise<Array<Category | CreateCategoryDTO>> {
+  async searchForAllCategories(@Query() params: string[]): Promise<Array<Category> | Category> {
+    const categoryId = params['categoryId']
+    const playerId = params['playerId']
+    if (categoryId) {
+      return await this.categoriesService.searchCategoryForId(categoryId)
+    }
+    if (playerId) {
+      return this.categoriesService.searchPlayerCategory(playerId)
+    }
     return await this.categoriesService.searchForAllCategories()
   }
 
   @Get('/:category')
-  async searchByCategory(@Param('category') category: string): Promise<CreateCategoryDTO> {
-    return await this.categoriesService.searchByCategory(category)
+  async searchPlayerCategory(@Param('category') category: string): Promise<CreateCategoryDTO> {
+    return await this.categoriesService.searchPlayerCategory(category)
   }
 
   @Put('/:category')

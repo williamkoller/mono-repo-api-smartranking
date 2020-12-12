@@ -32,21 +32,17 @@ export class CategoriesService {
    * @return {*}  {(Promise<Array<Category | CreateCategoryDTO>>)}
    * @memberof CategoriesService
    */
-  async searchForAllCategories(): Promise<Array<Category | CreateCategoryDTO>> {
-    const categories = await this.categoryModel.find({}, { __v: false }).populate('players').exec()
+  async searchForAllCategories(): Promise<Array<Category>> {
+    return this.categoryModel.find().populate('players').exec()
+  }
 
-    return categories.map((c) => ({
-      players: c.players.map((p) => ({
-        id: p.id,
-        name: p.name,
-        email: p.email,
-        phoneNumber: p.phoneNumber,
-      })),
-      id: c.id,
-      category: c.category,
-      description: c.description,
-      events: c.events,
-    }))
+  async searchCategoryForId(category: string): Promise<Category> {
+    const categoryFound = await this.categoryModel.findOne({ category }).exec()
+    if (!categoryFound) {
+      throw new NotFoundException('Category not found.')
+    }
+
+    return categoryFound
   }
 
   /**
@@ -54,24 +50,15 @@ export class CategoriesService {
    * @return {*}  {Promise<CreateCategoryDTO>}
    * @memberof CategoriesService
    */
-  async searchByCategory(category: string): Promise<CreateCategoryDTO> {
-    const categoryFound = await this.categoryModel.findOne({ category }).populate('players').exec()
-    if (!categoryFound) {
-      throw new NotFoundException(`The category not found`)
-    }
-    const categoryObject = {
-      players: categoryFound.players,
-      id: categoryFound.id,
-      category: categoryFound.category,
-      description: categoryFound.description,
-      events: categoryFound.events.map((eve) => ({
-        name: eve.name,
-        operation: eve.operation,
-        value: eve.value,
-      })),
+  async searchPlayerCategory(playerId: any): Promise<Category> {
+    const players = await this.playersService.searchForAllPlayer()
+    const playerFilter = players.filter((player) => player._id === playerId)
+
+    if (playerFilter.length === 0) {
+      throw new BadRequestException('The id not of a player.')
     }
 
-    return categoryObject
+    return await this.categoryModel.findOne().where('players').in(playerId).exec()
   }
 
   /**

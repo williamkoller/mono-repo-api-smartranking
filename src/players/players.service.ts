@@ -42,14 +42,8 @@ export class PlayersService {
    * @return {*}  {(Promise<Player[] | CreatePlayerDTO[]>)}
    * @memberof PlayersService
    */
-  async searchForAllPlayer(): Promise<Player[] | CreatePlayerDTO[]> {
-    const players = await this.playerModel.find({}, { __v: false }).exec()
-    return players.map((p) => ({
-      id: p.id,
-      name: p.name,
-      email: p.email,
-      numberPhone: p.phoneNumber,
-    }))
+  async searchForAllPlayer(): Promise<Player[]> {
+    return await this.playerModel.find({}, { __v: false }).exec()
   }
 
   /**

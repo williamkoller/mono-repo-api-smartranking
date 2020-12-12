@@ -18,20 +18,22 @@ export class ChallengesService {
   ) {}
   async createChallenge(createChallengeDto: CreateChallengeDto): Promise<Challenge> {
     const players = await this.playersService.searchForAllPlayer()
+    console.log(players)
 
     createChallengeDto.players.map((playerDto) => {
-      const playerFilter = players.filter((player) => player._id === playerDto._id)
+      const playerFilter = players.filter((player) => player._id == playerDto._id)
+      console.log(playerFilter)
 
-      if (playerFilter.length === 0) {
+      if (playerFilter.length == 0) {
         throw new BadRequestException('The id not of a player.')
       }
     })
 
     const applicanteIsMatchPlayer = createChallengeDto.players.filter((player) => {
-      player._id === createChallengeDto.applicant
+      player._id == createChallengeDto.applicant
     })
 
-    if (applicanteIsMatchPlayer.length === 0) {
+    if (applicanteIsMatchPlayer.length == 0) {
       throw new BadRequestException('The applicant must be a match player.')
     }
 

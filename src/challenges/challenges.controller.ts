@@ -8,6 +8,6 @@ export class ChallengesController {
   @Post()
   @UsePipes()
   async createChallenge(@Body() createChallengeDto: CreateChallengeDto) {
-    return this.challegensService.createChallenge(createChallengeDto)
+    return await this.challegensService.createChallenge(createChallengeDto)
   }
 }

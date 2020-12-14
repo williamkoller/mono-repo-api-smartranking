@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose'
 export const ChallengeSchema = new mongoose.Schema(
   {
-    challengeDateTime: {
+    dateHourChallenge: {
       type: Date,
     },
     status: {
@@ -23,9 +23,13 @@ export const ChallengeSchema = new mongoose.Schema(
     players: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Match',
+        ref: 'Player',
       },
     ],
+    match: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Match',
+    },
   },
   {
     timestamps: true,

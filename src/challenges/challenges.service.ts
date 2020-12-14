@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CategoriesService } from 'src/categories/categories.service'
@@ -10,6 +10,7 @@ import { Match } from './types/match.type'
 
 @Injectable()
 export class ChallengesService {
+  private readonly logger = new Logger(ChallengesService.name)
   constructor(
     @InjectModel('Challenge') private readonly challengeModel: Model<Challenge>,
     @InjectModel('Match') private readonly matchModel: Model<Match>,
@@ -18,22 +19,22 @@ export class ChallengesService {
   ) {}
   async createChallenge(createChallengeDto: CreateChallengeDto): Promise<Challenge> {
     const players = await this.playersService.searchForAllPlayer()
-    console.log(players)
+    this.logger.log(`players: ${players}`)
 
     createChallengeDto.players.map((playerDto) => {
-      const playerFilter = players.filter((player) => player._id == playerDto._id)
-      console.log(playerFilter)
+      const playerFilter = players.filter((player) => player._id === playerDto._id)
+      this.logger.log(`playerFilter: ${JSON.stringify(playerFilter)}`)
 
-      if (playerFilter.length == 0) {
+      if (playerFilter.length === 0) {
         throw new BadRequestException('The id not of a player.')
       }
     })
 
-    const applicanteIsMatchPlayer = createChallengeDto.players.filter((player) => {
-      player._id == createChallengeDto.applicant
-    })
+    const applicantIsMatchPlayer = createChallengeDto.players.filter(
+      (player) => player._id == createChallengeDto.applicant,
+    )
 
-    if (applicanteIsMatchPlayer.length == 0) {
+    if (applicantIsMatchPlayer.length === 0) {
       throw new BadRequestException('The applicant must be a match player.')
     }
 

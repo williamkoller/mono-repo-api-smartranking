@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Add Module Challenges
+- Add createChallenge
+- Add ChallengeStatusValidationPipe
+- Add ChallengeStatus
+- Add ChallengeSchema
+- Add MatchSchema
+
 ## Release [v0.0.3] 12-08-2020
 
 ### Added

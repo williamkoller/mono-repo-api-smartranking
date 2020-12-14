@@ -4,7 +4,7 @@ import { Player } from 'src/players/types/player.type'
 export class CreateChallengeDto {
   @IsNotEmpty()
   @IsDateString()
-  challengeDateTime: Date
+  dateHourChallenge: Date
 
   @IsNotEmpty()
   applicant: Player

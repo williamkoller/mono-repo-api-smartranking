@@ -6,14 +6,12 @@ import { PlayersService } from 'src/players/players.service'
 import { CreateChallengeDto } from './dto/create-challenge.dto'
 import { ChallengeStatus } from './enum/challenge-status.enum'
 import { Challenge } from './types/challenge.type'
-import { Match } from './types/match.type'
 
 @Injectable()
 export class ChallengesService {
   private readonly logger = new Logger(ChallengesService.name)
   constructor(
     @InjectModel('Challenge') private readonly challengeModel: Model<Challenge>,
-    @InjectModel('Match') private readonly matchModel: Model<Match>,
     private readonly playersService: PlayersService,
     private readonly categoriesService: CategoriesService,
   ) {}
@@ -22,11 +20,9 @@ export class ChallengesService {
     this.logger.log(`players: ${players}`)
 
     createChallengeDto.players.map((playerDto) => {
-      const playerFilter = players.filter((player) => player._id === playerDto._id)
-      this.logger.log(`playerFilter: ${JSON.stringify(playerFilter)}`)
-
-      if (playerFilter.length === 0) {
-        throw new BadRequestException('The id not of a player.')
+      const filterPlayer = players.filter((player) => player._id == playerDto._id)
+      if (filterPlayer.length == 0) {
+        throw new BadRequestException('This id is not a player.')
       }
     })
 
@@ -34,7 +30,7 @@ export class ChallengesService {
       (player) => player._id == createChallengeDto.applicant,
     )
 
-    if (applicantIsMatchPlayer.length === 0) {
+    if (applicantIsMatchPlayer.length == 0) {
       throw new BadRequestException('The applicant must be a match player.')
     }
 

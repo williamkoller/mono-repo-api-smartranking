@@ -28,7 +28,7 @@ export class PlayersService {
   }
 
   async searchForAllPlayer(): Promise<Player[]> {
-    const players = await this.playerModel.find({}, { __v: false }).exec()
+    const players = await this.playerModel.find().exec()
 
     if (!players) {
       throw new BadRequestException('There is no registered player.')

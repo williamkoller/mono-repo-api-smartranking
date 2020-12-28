@@ -1,15 +1,13 @@
-FROM node:12.15-alpine3.10
+FROM node:12.20-alpine3.12
 
-RUN mkdir /app
+WORKDIR /usr/src/app
 
-WORKDIR /app
+COPY package*.json ./
 
-COPY ./package.json /app
-COPY ./yarn.lock /app
-COPY .env /app
-COPY . . 
+RUN npm install
 
-RUN npm install 
-RUN npm install -g @nestjs/cli
+COPY . .
 
-CMD ["npm", "run", "start:dev"]
+EXPOSE 3000
+
+CMD [ "npm", "run","start:dev" ]

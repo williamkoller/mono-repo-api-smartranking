@@ -13,11 +13,6 @@ export class CategoriesService {
     private readonly playersService: PlayersService,
   ) {}
 
-  /**
-   * @param {CreateCategoryDTO} createCategoryDto
-   * @return {*}  {Promise<Category>}
-   * @memberof CategoriesService
-   */
   async createCategory(createCategoryDto: CreateCategoryDTO): Promise<Category> {
     const { category } = createCategoryDto
     const categoryFound = await this.categoryModel.findOne({ category }).exec()
@@ -28,10 +23,6 @@ export class CategoriesService {
     return await categoryCreated.save()
   }
 
-  /**
-   * @return {*}  {(Promise<Array<Category | CreateCategoryDTO>>)}
-   * @memberof CategoriesService
-   */
   async searchForAllCategories(): Promise<Array<Category>> {
     return this.categoryModel.find().populate('players').exec()
   }
@@ -45,28 +36,17 @@ export class CategoriesService {
     return categoryFound
   }
 
-  /**
-   * @param {string} category
-   * @return {*}  {Promise<CreateCategoryDTO>}
-   * @memberof CategoriesService
-   */
   async searchPlayerCategory(playerId: any): Promise<Category> {
     const players = await this.playersService.searchForAllPlayer()
-    const playerFilter = players.filter((player) => player._id === playerId)
+    const playerFilter = players.filter((player) => player._id == playerId)
 
-    if (playerFilter.length === 0) {
-      throw new BadRequestException('The id not of a player.')
+    if (playerFilter.length == 0) {
+      throw new BadRequestException('This id is not a player.')
     }
 
     return await this.categoryModel.findOne().where('players').in(playerId).exec()
   }
 
-  /**
-   * @param {string} category
-   * @param {UpdateCategoryDTO} updateCategoryDto
-   * @return {*}  {Promise<UpdateCategoryDTO>}
-   * @memberof CategoriesService
-   */
   async updateCategory(category: string, updateCategoryDto: UpdateCategoryDTO): Promise<UpdateCategoryDTO> {
     const categoryFound = await this.categoryModel.findOne({ category }).exec()
     if (!categoryFound) {
@@ -75,11 +55,6 @@ export class CategoriesService {
     return await this.categoryModel.findOneAndUpdate({ category }, { $set: updateCategoryDto }).exec()
   }
 
-  /**
-   * @param {string[]} params
-   * @return {*}  {Promise<Category>}
-   * @memberof CategoriesService
-   */
   async assignedPlayerCategory(params: string[]): Promise<Category> {
     const category = params['category']
     const playerId = params['playerId']

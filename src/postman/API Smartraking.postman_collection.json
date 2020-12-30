@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"William\",\n  \"email\": \"williama@gmail.com\",\n  \"phoneNumber\": 41998625100\n}",
+							"raw": "{\n  \"name\": \"Marli Terezinha\",\n  \"email\": \"marli_t@gmail.com\",\n  \"phoneNumber\": 41984251792\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -114,8 +114,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Categories",
@@ -147,6 +146,26 @@
 					"response": []
 				},
 				{
+					"name": "Post Assign Player Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categories/A/players/5fe923924ad1d3007dfe867e",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"A",
+								"players",
+								"5fe923924ad1d3007dfe867e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Search For All Categories",
 					"request": {
 						"method": "GET",
@@ -164,7 +183,7 @@
 					"response": []
 				},
 				{
-					"name": "Search By Category",
+					"name": "Search Player Category",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -203,21 +222,128 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/categories/A",
+							"raw": "{{base_url}}/categories/P",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"categories",
-								"A"
+								"P"
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
+		},
+		{
+			"name": "Challenge",
+			"item": [
+				{
+					"name": "Create Challenge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dateHourChallenge\": \"2020-12-29T23:35:00\",\n  \"applicant\": \"5fe923924ad1d3007dfe867e\",\n  \"players\": [\n    {\n      \"_id\": \"5fe923924ad1d3007dfe867e\"\n    },\n    {\n      \"_id\": \"5fe923af4ad1d3007dfe867f\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/challenges",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"challenges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/challenges?playerId=5fe923924ad1d3007dfe867e",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"challenges"
+							],
+							"query": [
+								{
+									"key": "playerId",
+									"value": "5fe923924ad1d3007dfe867e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Challenge",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"challengeDateTime\": \"2020-12-30 10:00:00\",\n    \"status\": \"ACCEPT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/challenges/5febc337dde8fc001dbd8246",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"challenges",
+								"5febc337dde8fc001dbd8246"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Match Challenge",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"def\": \"5fe923af4ad1d3007dfe867f\",\n    \"result\": [\n        {\n            \"set\": \"6-1\"\n        },\n        {\n            \"set\": \"6-4\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/challenges/5febd9dafa8a0d0afe691366/match",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"challenges",
+								"5febd9dafa8a0d0afe691366",
+								"match"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

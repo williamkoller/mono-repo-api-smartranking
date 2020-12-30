@@ -17,8 +17,6 @@ export class ChallengesService {
   ) {}
   async createChallenge(createChallengeDto: CreateChallengeDto): Promise<Challenge> {
     const players = await this.playersService.searchForAllPlayer()
-    this.logger.log(`players: ${players}`)
-
     createChallengeDto.players.map((playerDto) => {
       const filterPlayer = players.filter((player) => player._id == playerDto._id)
       if (filterPlayer.length == 0) {
@@ -46,5 +44,9 @@ export class ChallengesService {
 
     createChallenge.status = ChallengeStatus.PENDING
     return await createChallenge.save()
+  }
+
+  async findAll(): Promise<Array<Challenge>> {
+    return await this.challengeModel.find().populate('applicant').populate('players').populate('matchs').exec()
   }
 }

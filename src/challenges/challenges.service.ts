@@ -4,6 +4,7 @@ import { Model } from 'mongoose'
 import { CategoriesService } from 'src/categories/categories.service'
 import { PlayersService } from 'src/players/players.service'
 import { CreateChallengeDto } from './dto/create-challenge.dto'
+import { UpdateChallengeDto } from './dto/update-challenge.dto'
 import { ChallengeStatus } from './enum/challenge-status.enum'
 import { Challenge } from './types/challenge.type'
 
@@ -62,5 +63,19 @@ export class ChallengesService {
       .populate('players')
       .populate('matchs')
       .exec()
+  }
+
+  async updateChallenge(_id: string, updateChallengeDto: UpdateChallengeDto): Promise<Challenge> {
+    const challengeFound = await this.challengeModel.findById(_id).exec()
+    if (!challengeFound) {
+      throw new BadRequestException('Challenge not found.')
+    }
+    if (updateChallengeDto.status) {
+      challengeFound.dateHourAnswer = new Date()
+    }
+    challengeFound.status = updateChallengeDto.status
+    challengeFound.challengeDateTime = updateChallengeDto.challengeDateTime
+
+    return await this.challengeModel.findOneAndUpdate({ _id }, { $set: challengeFound }).exec()
   }
 }

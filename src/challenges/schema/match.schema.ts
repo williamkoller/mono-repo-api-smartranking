@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose'
 
 export const MatchSchema = new mongoose.Schema(
   {
-    categories: {
+    category: {
       type: String,
     },
     players: [

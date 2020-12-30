@@ -1,17 +1,21 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CategoriesService } from 'src/categories/categories.service'
 import { PlayersService } from 'src/players/players.service'
+import { AssignMatchChallengeDto } from './dto/assign-match-challenge.dto'
 import { CreateChallengeDto } from './dto/create-challenge.dto'
 import { UpdateChallengeDto } from './dto/update-challenge.dto'
 import { ChallengeStatus } from './enum/challenge-status.enum'
 import { Challenge } from './types/challenge.type'
+import { Match } from './types/match.type'
 
 @Injectable()
 export class ChallengesService {
+  private readonly logger = new Logger(ChallengesService.name)
   constructor(
     @InjectModel('Challenge') private readonly challengeModel: Model<Challenge>,
+    @InjectModel('Match') private readonly matchModel: Model<Match>,
     private readonly playersService: PlayersService,
     private readonly categoriesService: CategoriesService,
   ) {}
@@ -47,7 +51,7 @@ export class ChallengesService {
   }
 
   async findAll(): Promise<Array<Challenge>> {
-    return await this.challengeModel.find().populate('applicant').populate('players').populate('matchs').exec()
+    return await this.challengeModel.find().populate('applicant').populate('players').populate('match').exec()
   }
 
   async findChallengeByPlayer(_id: any): Promise<Array<Challenge>> {
@@ -61,7 +65,7 @@ export class ChallengesService {
       .in(_id)
       .populate('applicant')
       .populate('players')
-      .populate('matchs')
+      .populate('match')
       .exec()
   }
 
@@ -76,6 +80,46 @@ export class ChallengesService {
     challengeFound.status = updateChallengeDto.status
     challengeFound.challengeDateTime = updateChallengeDto.challengeDateTime
 
+    return await this.challengeModel.findOneAndUpdate({ _id }, { $set: challengeFound }).exec()
+  }
+
+  async assignMatchChallenge(_id: string, assignMatchChallengeDto: AssignMatchChallengeDto): Promise<Challenge> {
+    const challengeFound = await this.challengeModel.findById(_id).exec()
+    if (!challengeFound) {
+      throw new BadRequestException('Challenge not found.')
+    }
+    const playerFilter = challengeFound.players.filter((player) => player._id == assignMatchChallengeDto.def)
+    this.logger.log(`challengeFound: ${challengeFound}`)
+    this.logger.log(`playerFilter: ${playerFilter}`)
+    if (playerFilter.length == 0) {
+      throw new BadRequestException('The winning player is not part of the game.')
+    }
+    const challengeCreated = new this.matchModel(assignMatchChallengeDto)
+
+    challengeCreated.category = challengeFound.category
+
+    challengeCreated.players = challengeFound.players
+
+    const result = await challengeCreated.save()
+
+    challengeFound.status = ChallengeStatus.ACCOMPLISHED
+
+    challengeFound.match = result._id
+
+    try {
+      return await this.challengeModel.findOneAndUpdate({ _id }, { $set: challengeFound }).exec()
+    } catch (error) {
+      await this.matchModel.deleteOne({ _id: result._id }).exec()
+      throw new InternalServerErrorException(error.message)
+    }
+  }
+
+  async deleteChallenge(_id: string): Promise<Challenge> {
+    const challengeFound = await this.challengeModel.findById(_id).exec()
+    if (!challengeFound) {
+      throw new BadRequestException('Challenge not found.')
+    }
+    challengeFound.status = ChallengeStatus.CANCELED
     return await this.challengeModel.findOneAndUpdate({ _id }, { $set: challengeFound }).exec()
   }
 }

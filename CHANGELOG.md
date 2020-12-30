@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## Release [v0.0.4] 12-29-2020
+
 ### Added
 
 - Add Module Challenges
@@ -12,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Add ChallengeStatus
 - Add ChallengeSchema
 - Add MatchSchema
+- Add Implementation of creating challenges and matches
 
 ## Release [v0.0.3] 12-08-2020
 

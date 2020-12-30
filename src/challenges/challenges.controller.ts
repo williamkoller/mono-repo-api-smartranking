@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common'
 import { ChallengesService } from './challenges.service'
 import { CreateChallengeDto } from './dto/create-challenge.dto'
 import { Challenge } from './types/challenge.type'
@@ -13,7 +13,7 @@ export class ChallengesController {
   }
 
   @Get()
-  async findAll(): Promise<Array<Challenge>> {
-    return await this.challegensService.findAll()
+  async findAll(@Query('playerId') _id: string): Promise<Array<Challenge>> {
+    return _id ? await this.challegensService.findChallengeByPlayer(_id) : await this.challegensService.findAll()
   }
 }

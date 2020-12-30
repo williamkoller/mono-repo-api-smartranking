@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { CategoriesService } from 'src/categories/categories.service'
@@ -9,7 +9,6 @@ import { Challenge } from './types/challenge.type'
 
 @Injectable()
 export class ChallengesService {
-  private readonly logger = new Logger(ChallengesService.name)
   constructor(
     @InjectModel('Challenge') private readonly challengeModel: Model<Challenge>,
     private readonly playersService: PlayersService,
@@ -48,5 +47,20 @@ export class ChallengesService {
 
   async findAll(): Promise<Array<Challenge>> {
     return await this.challengeModel.find().populate('applicant').populate('players').populate('matchs').exec()
+  }
+
+  async findChallengeByPlayer(_id: any): Promise<Array<Challenge>> {
+    const players = await this.playersService.searchForAllPlayer()
+    const playerFilters = players.filter((player) => player._id == _id)
+    if (playerFilters.length == 0) {
+      throw new BadRequestException('This id not is player.')
+    }
+    return await this.challengeModel
+      .where('players')
+      .in(_id)
+      .populate('applicant')
+      .populate('players')
+      .populate('matchs')
+      .exec()
   }
 }
